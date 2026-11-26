@@ -44,7 +44,7 @@ function LinkedinIcon({ size = 17, className = '' }) {
 
 const PROFILE = {
   name: 'Deb Prasad Gabur',
-  shortName: 'DEB PRASAD',
+  shortName: 'DEB',
   role: 'Data Analyst',
   descriptor: 'Machine Learning Enthusiast',
   location: 'West Bengal, India',
