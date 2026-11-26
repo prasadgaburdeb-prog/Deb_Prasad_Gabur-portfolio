@@ -56,7 +56,7 @@ html {
 body {
   background: var(--bg);
   color: var(--white);
-  overflow-x: hidden;
+  overflow-x: clip;
   line-height: 1.6;
 }
 
@@ -76,11 +76,10 @@ button {
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .section-wrap,
-.header,
 .topline {
   width: min(1180px, calc(100% - 64px));
   margin-inline: auto;
@@ -139,28 +138,38 @@ button {
 }
 
 /* ==========================================================================
-   HEADER & NAVIGATION
+   HEADER & NAVIGATION (STICKY ON SCROLL)
    ========================================================================== */
 .header {
-  height: 88px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 84px;
+  z-index: 1000;
+  background: rgba(9, 10, 13, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--line);
+  transition: height 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.header.header-scrolled,
+.header-scrolled {
+  height: 70px;
+  background: rgba(9, 10, 13, 0.94);
+  border-bottom-color: rgba(237, 52, 60, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
+}
+
+.header-inner {
+  width: min(1180px, calc(100% - 64px));
+  margin-inline: auto;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--line);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: var(--bg);
-  transition: background-color 0.28s ease, backdrop-filter 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, height 0.28s ease;
-}
-
-.header-scrolled {
-  height: 74px;
-  background: rgba(9, 10, 13, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom-color: rgba(237, 52, 60, 0.22);
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.6);
 }
 
 .brand {
@@ -3600,8 +3609,8 @@ h2 {
    ========================================================================== */
 @media (max-width: 1080px) and (min-width: 861px) {
   .section-wrap,
-  .header,
-  .topline {
+  .topline,
+  .header-inner {
     width: calc(100% - 48px);
   }
 
@@ -3620,13 +3629,18 @@ h2 {
 
 @media (max-width: 860px) {
   .section-wrap,
-  .header,
-  .topline {
+  .topline,
+  .header-inner {
     width: calc(100% - 40px);
   }
 
   .header {
-    height: 76px;
+    height: 72px;
+  }
+
+  .header.header-scrolled,
+  .header-scrolled {
+    height: 64px;
   }
 
   .menu-toggle {

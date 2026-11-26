@@ -379,7 +379,18 @@ function App() {
           const scrollY = window.scrollY;
 
           // Header state (only updates state if changed)
-          setScrolled(scrollY > 30);
+          setScrolled(scrollY > 25);
+
+          // Dynamic active section tracking when scrolling down or up
+          const sections = ['contact', 'journey', 'projects', 'skills', 'about', 'home'];
+          const triggerLine = scrollY + 140;
+          for (const sId of sections) {
+            const el = document.getElementById(sId);
+            if (el && el.offsetTop <= triggerLine) {
+              setActiveNav(`#${sId}`);
+              break;
+            }
+          }
 
           // Direct CSS custom property update for About section
           if (aboutRef.current) {
@@ -472,45 +483,47 @@ function App() {
         </span>
       </div>
 
-      {/* Main Header / Navigation with dynamic scroll elevation */}
+      {/* Main Header / Navigation with sticky positioning on scroll */}
       <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
-        <a className="brand" href="#home" aria-label="Deb Prasad Gabur Home">
-          <span className="brand-mark">
-            D<span className="brand-dot">.</span>
-          </span>
-          <span className="brand-details">
-            <span className="brand-name">{PROFILE.shortName}</span>
-            <small className="brand-role">DATA · ANALYTICS · MACHINE LEARNING</small>
-          </span>
-        </a>
-
-        <button
-          className="menu-toggle"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-          aria-expanded={menuOpen}
-        >
-          {menuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-
-        {menuOpen && <div className="nav-backdrop" onClick={closeMenu} aria-hidden="true" />}
-
-        <nav className={menuOpen ? 'nav nav-open' : 'nav'} aria-label="Main Navigation">
-          {nav.map(([label, href]) => (
-            <a
-              key={label}
-              href={href}
-              onClick={closeMenu}
-              className={`nav-link ${activeNav === href ? 'nav-link-active' : ''}`}
-            >
-              {label}
-            </a>
-          ))}
-          <a className="nav-cta" href="#contact" onClick={closeMenu}>
-            <span>Let's talk</span>
-            <ArrowUpRight size={15} />
+        <div className="header-inner">
+          <a className="brand" href="#home" aria-label="Deb Prasad Gabur Home">
+            <span className="brand-mark">
+              D<span className="brand-dot">.</span>
+            </span>
+            <span className="brand-details">
+              <span className="brand-name">{PROFILE.shortName}</span>
+              <small className="brand-role">DATA · ANALYTICS · MACHINE LEARNING</small>
+            </span>
           </a>
-        </nav>
+
+          <button
+            className="menu-toggle"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+
+          {menuOpen && <div className="nav-backdrop" onClick={closeMenu} aria-hidden="true" />}
+
+          <nav className={menuOpen ? 'nav nav-open' : 'nav'} aria-label="Main Navigation">
+            {nav.map(([label, href]) => (
+              <a
+                key={label}
+                href={href}
+                onClick={closeMenu}
+                className={`nav-link ${activeNav === href ? 'nav-link-active' : ''}`}
+              >
+                {label}
+              </a>
+            ))}
+            <a className="nav-cta" href="#contact" onClick={closeMenu}>
+              <span>Let's talk</span>
+              <ArrowUpRight size={15} />
+            </a>
+          </nav>
+        </div>
       </header>
 
       <main>
